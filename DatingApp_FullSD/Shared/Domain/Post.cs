@@ -22,6 +22,6 @@ namespace DatingApp_FullSD.Shared.Domain
 
         public string? UserName { get; set; }
 
-        public virtual User? PUserName { get; set; }
+        public virtual Profile? PUserName { get; set; }
     }
 }

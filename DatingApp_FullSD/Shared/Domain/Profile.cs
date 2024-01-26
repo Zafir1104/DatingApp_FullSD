@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace DatingApp_FullSD.Shared.Domain
 {
-    public class User : BaseDomainModel
+    public class Profile : BaseDomainModel
     {
         public int UserID { get; set; }
 
@@ -16,7 +16,7 @@ namespace DatingApp_FullSD.Shared.Domain
 
         public string? Interest { get; set; }
 
-        public byte[]? Picture { get; set; }
+        public string? Picture { get; set; }
 
         public string? Birthdate { get; set; }
 

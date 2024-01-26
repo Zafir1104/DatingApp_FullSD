@@ -12,11 +12,11 @@ namespace DatingApp_FullSD.Shared.Domain
 
         public int User1 { get; set; }
 
-        public virtual User? UserID1 { get; set; }
+        public virtual Profile? UserID1 { get; set; }
 
         public int User2 { get; set; }
 
-        public virtual User? UserID2 { get; set; }
+        public virtual Profile? UserID2 { get; set; }
 
     }
 

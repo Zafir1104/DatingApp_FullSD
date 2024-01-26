@@ -4,6 +4,7 @@ using DatingApp_FullSD.Server.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DatingApp_FullSD.Server.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240126063633_AddedDefaultDataAndUser1")]
+    partial class AddedDefaultDataAndUser1
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -97,7 +100,7 @@ namespace DatingApp_FullSD.Server.Migrations
                         {
                             Id = "3781efa7-66dc-47f0-860f-e506d04102e4",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "6b2a4f84-17b4-4714-a0ab-e9e8316b4791",
+                            ConcurrencyStamp = "e3742b92-ff87-4abc-a087-42141379d7ac",
                             Email = "admin@localhost.com",
                             EmailConfirmed = false,
                             FirstName = "Admin",
@@ -105,9 +108,9 @@ namespace DatingApp_FullSD.Server.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "ADMIN@LOCALHOST.COM",
                             NormalizedUserName = "ADMIN@LOCALHOST.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAEJmDeECER0kdAr9LPdcpE5L/XFAP0xa8+mA9zMmrVTCzE8ZJHuXz7ouUdifRzNdi0A==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEB8L0bvZWz3LXZrDBNcdEuGyFZ28A0lnDDdfG/16sNYBjgu8KMpfU46IolMlTIt+uA==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "67b91441-79b6-4f20-a1a6-8277a6d7c6d8",
+                            SecurityStamp = "8174d349-6564-4827-8b94-ffdaace05f6c",
                             TwoFactorEnabled = false,
                             UserName = "admin@localhost.com"
                         });
@@ -266,7 +269,7 @@ namespace DatingApp_FullSD.Server.Migrations
                         });
                 });
 
-            modelBuilder.Entity("DatingApp_FullSD.Shared.Domain.Profile", b =>
+            modelBuilder.Entity("DatingApp_FullSD.Shared.Domain.User", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -298,8 +301,8 @@ namespace DatingApp_FullSD.Server.Migrations
                     b.Property<string>("Occupation")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Picture")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<byte[]>("Picture")
+                        .HasColumnType("varbinary(max)");
 
                     b.Property<string>("UpdatedBy")
                         .HasColumnType("nvarchar(max)");
@@ -312,51 +315,7 @@ namespace DatingApp_FullSD.Server.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Profiles");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Birthdate = "1990-01-15",
-                            DateCreated = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            DateUpdated = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Gender = "Male",
-                            Interest = "Hiking, Reading",
-                            Location = "Yishun",
-                            Occupation = "Doctor",
-                            Picture = "/images/Profiles/ProfilePic1(300x300)",
-                            UserID = 0,
-                            UserName = "LeeSirui"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Birthdate = "1985-08-22",
-                            DateCreated = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            DateUpdated = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Gender = "Female",
-                            Interest = "Traveling, Photography",
-                            Location = "Bedok",
-                            Occupation = "Marketing Specialist",
-                            Picture = "/images/Profiles/ProfilePic2(300x300)",
-                            UserID = 0,
-                            UserName = "Harith"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            Birthdate = "1992-04-05",
-                            DateCreated = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            DateUpdated = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Gender = "Male",
-                            Interest = "Sports, Music",
-                            Location = "PasirRis",
-                            Occupation = "Teacher",
-                            Picture = "/images/Profiles/ProfilePic3(300x300)",
-                            UserID = 0,
-                            UserName = "Gerald"
-                        });
+                    b.ToTable("Users");
                 });
 
             modelBuilder.Entity("Duende.IdentityServer.EntityFramework.Entities.DeviceFlowCodes", b =>
@@ -660,11 +619,11 @@ namespace DatingApp_FullSD.Server.Migrations
 
             modelBuilder.Entity("DatingApp_FullSD.Shared.Domain.Match", b =>
                 {
-                    b.HasOne("DatingApp_FullSD.Shared.Domain.Profile", "UserID1")
+                    b.HasOne("DatingApp_FullSD.Shared.Domain.User", "UserID1")
                         .WithMany()
                         .HasForeignKey("UserID1Id");
 
-                    b.HasOne("DatingApp_FullSD.Shared.Domain.Profile", "UserID2")
+                    b.HasOne("DatingApp_FullSD.Shared.Domain.User", "UserID2")
                         .WithMany()
                         .HasForeignKey("UserID2Id");
 
@@ -675,7 +634,7 @@ namespace DatingApp_FullSD.Server.Migrations
 
             modelBuilder.Entity("DatingApp_FullSD.Shared.Domain.Post", b =>
                 {
-                    b.HasOne("DatingApp_FullSD.Shared.Domain.Profile", "PUserName")
+                    b.HasOne("DatingApp_FullSD.Shared.Domain.User", "PUserName")
                         .WithMany()
                         .HasForeignKey("PUserNameId");
 

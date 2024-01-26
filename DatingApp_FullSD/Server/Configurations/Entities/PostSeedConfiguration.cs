@@ -12,7 +12,7 @@ namespace DatingApp_FullSD.Server.Configurations.Entities
             builder.HasData(
                 new Post
                 {
-                    PostID = 1,
+                    Id = 1,
                     PostText = "Enjoying a beautiful day!",
                     PostLikes = 10,
                     UserName = "JohnDoe",
@@ -21,7 +21,7 @@ namespace DatingApp_FullSD.Server.Configurations.Entities
                 },
                 new Post
                 {
-                    PostID = 2,
+                    Id = 2,
                     PostText = "Exploring new places!",
                     PostLikes = 15,
                     UserName = "JaneSmith",
@@ -30,7 +30,7 @@ namespace DatingApp_FullSD.Server.Configurations.Entities
                 },
                 new Post
                 {
-                    PostID = 3,
+                    Id = 3,
                     PostText = "Game day!",
                     PostLikes = 8,
                     UserName = "BobJohnson",

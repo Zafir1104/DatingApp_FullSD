@@ -4,6 +4,7 @@ using DatingApp_FullSD.Server.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DatingApp_FullSD.Server.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240126042029_AddedDefaultDataAndUser")]
+    partial class AddedDefaultDataAndUser
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -91,26 +94,6 @@ namespace DatingApp_FullSD.Server.Migrations
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
                     b.ToTable("AspNetUsers", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            Id = "3781efa7-66dc-47f0-860f-e506d04102e4",
-                            AccessFailedCount = 0,
-                            ConcurrencyStamp = "6b2a4f84-17b4-4714-a0ab-e9e8316b4791",
-                            Email = "admin@localhost.com",
-                            EmailConfirmed = false,
-                            FirstName = "Admin",
-                            LastName = "User",
-                            LockoutEnabled = false,
-                            NormalizedEmail = "ADMIN@LOCALHOST.COM",
-                            NormalizedUserName = "ADMIN@LOCALHOST.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAEJmDeECER0kdAr9LPdcpE5L/XFAP0xa8+mA9zMmrVTCzE8ZJHuXz7ouUdifRzNdi0A==",
-                            PhoneNumberConfirmed = false,
-                            SecurityStamp = "67b91441-79b6-4f20-a1a6-8277a6d7c6d8",
-                            TwoFactorEnabled = false,
-                            UserName = "admin@localhost.com"
-                        });
                 });
 
             modelBuilder.Entity("DatingApp_FullSD.Shared.Domain.Match", b =>
@@ -155,26 +138,6 @@ namespace DatingApp_FullSD.Server.Migrations
                     b.HasIndex("UserID2Id");
 
                     b.ToTable("Matches");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            DateCreated = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            DateUpdated = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            MatchID = 0,
-                            User1 = 1,
-                            User2 = 2
-                        },
-                        new
-                        {
-                            Id = 2,
-                            DateCreated = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            DateUpdated = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            MatchID = 0,
-                            User1 = 1,
-                            User2 = 3
-                        });
                 });
 
             modelBuilder.Entity("DatingApp_FullSD.Shared.Domain.Post", b =>
@@ -226,47 +189,9 @@ namespace DatingApp_FullSD.Server.Migrations
                     b.HasIndex("PUserNameId");
 
                     b.ToTable("Posts");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            DateCreated = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            DateUpdated = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            PostComments = "Great picture!",
-                            PostID = 0,
-                            PostLikes = 10,
-                            PostPicture = "/images/Posts/Post1(500x300)",
-                            PostText = "Enjoying a beautiful day!",
-                            UserName = "JohnDoe"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            DateCreated = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            DateUpdated = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            PostComments = "Looks like an amazing adventure!",
-                            PostID = 0,
-                            PostLikes = 15,
-                            PostPicture = "/images/Posts/Post2(500x300)",
-                            PostText = "Exploring new places!",
-                            UserName = "JaneSmith"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            DateCreated = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            DateUpdated = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            PostComments = "Go team go!",
-                            PostID = 0,
-                            PostLikes = 8,
-                            PostPicture = "/images/Posts/Post3(500x300)",
-                            PostText = "Game day!",
-                            UserName = "BobJohnson"
-                        });
                 });
 
-            modelBuilder.Entity("DatingApp_FullSD.Shared.Domain.Profile", b =>
+            modelBuilder.Entity("DatingApp_FullSD.Shared.Domain.User", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -298,8 +223,8 @@ namespace DatingApp_FullSD.Server.Migrations
                     b.Property<string>("Occupation")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Picture")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<byte[]>("Picture")
+                        .HasColumnType("varbinary(max)");
 
                     b.Property<string>("UpdatedBy")
                         .HasColumnType("nvarchar(max)");
@@ -312,51 +237,7 @@ namespace DatingApp_FullSD.Server.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Profiles");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Birthdate = "1990-01-15",
-                            DateCreated = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            DateUpdated = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Gender = "Male",
-                            Interest = "Hiking, Reading",
-                            Location = "Yishun",
-                            Occupation = "Doctor",
-                            Picture = "/images/Profiles/ProfilePic1(300x300)",
-                            UserID = 0,
-                            UserName = "LeeSirui"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Birthdate = "1985-08-22",
-                            DateCreated = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            DateUpdated = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Gender = "Female",
-                            Interest = "Traveling, Photography",
-                            Location = "Bedok",
-                            Occupation = "Marketing Specialist",
-                            Picture = "/images/Profiles/ProfilePic2(300x300)",
-                            UserID = 0,
-                            UserName = "Harith"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            Birthdate = "1992-04-05",
-                            DateCreated = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            DateUpdated = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Gender = "Male",
-                            Interest = "Sports, Music",
-                            Location = "PasirRis",
-                            Occupation = "Teacher",
-                            Picture = "/images/Profiles/ProfilePic3(300x300)",
-                            UserID = 0,
-                            UserName = "Gerald"
-                        });
+                    b.ToTable("Users");
                 });
 
             modelBuilder.Entity("Duende.IdentityServer.EntityFramework.Entities.DeviceFlowCodes", b =>
@@ -525,20 +406,6 @@ namespace DatingApp_FullSD.Server.Migrations
                         .HasFilter("[NormalizedName] IS NOT NULL");
 
                     b.ToTable("AspNetRoles", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            Id = "ad2bcf0c-20db-474f-8407-5a6b159518ba",
-                            Name = "Administrator",
-                            NormalizedName = "ADMINISTRATOR"
-                        },
-                        new
-                        {
-                            Id = "bd2bcf0c-20db-474f-8407-5a6b159518bb",
-                            Name = "User",
-                            NormalizedName = "USER"
-                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -628,13 +495,6 @@ namespace DatingApp_FullSD.Server.Migrations
                     b.HasIndex("RoleId");
 
                     b.ToTable("AspNetUserRoles", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            UserId = "3781efa7-66dc-47f0-860f-e506d04102e4",
-                            RoleId = "ad2bcf0c-20db-474f-8407-5a6b159518ba"
-                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
@@ -660,11 +520,11 @@ namespace DatingApp_FullSD.Server.Migrations
 
             modelBuilder.Entity("DatingApp_FullSD.Shared.Domain.Match", b =>
                 {
-                    b.HasOne("DatingApp_FullSD.Shared.Domain.Profile", "UserID1")
+                    b.HasOne("DatingApp_FullSD.Shared.Domain.User", "UserID1")
                         .WithMany()
                         .HasForeignKey("UserID1Id");
 
-                    b.HasOne("DatingApp_FullSD.Shared.Domain.Profile", "UserID2")
+                    b.HasOne("DatingApp_FullSD.Shared.Domain.User", "UserID2")
                         .WithMany()
                         .HasForeignKey("UserID2Id");
 
@@ -675,7 +535,7 @@ namespace DatingApp_FullSD.Server.Migrations
 
             modelBuilder.Entity("DatingApp_FullSD.Shared.Domain.Post", b =>
                 {
-                    b.HasOne("DatingApp_FullSD.Shared.Domain.Profile", "PUserName")
+                    b.HasOne("DatingApp_FullSD.Shared.Domain.User", "PUserName")
                         .WithMany()
                         .HasForeignKey("PUserNameId");
 
