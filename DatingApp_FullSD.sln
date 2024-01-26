@@ -3,11 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.8.34309.116
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DatingApp_FullSD.Server", "DatingApp_FullSD\Server\DatingApp_FullSD.Server.csproj", "{BAD9169E-CAEB-43A4-8697-B175A79C1DA5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DatingApp_FullSD.Server", "DatingApp_FullSD\Server\DatingApp_FullSD.Server.csproj", "{BAD9169E-CAEB-43A4-8697-B175A79C1DA5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DatingApp_FullSD.Client", "DatingApp_FullSD\Client\DatingApp_FullSD.Client.csproj", "{0EC4CB43-AC4E-46F5-B07F-1B32EA6B6266}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DatingApp_FullSD.Client", "DatingApp_FullSD\Client\DatingApp_FullSD.Client.csproj", "{0EC4CB43-AC4E-46F5-B07F-1B32EA6B6266}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DatingApp_FullSD.Shared", "DatingApp_FullSD\Shared\DatingApp_FullSD.Shared.csproj", "{67617FDE-0FE9-4D8D-AACA-33150A2CA4DD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DatingApp_FullSD.Shared", "DatingApp_FullSD\Shared\DatingApp_FullSD.Shared.csproj", "{67617FDE-0FE9-4D8D-AACA-33150A2CA4DD}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
