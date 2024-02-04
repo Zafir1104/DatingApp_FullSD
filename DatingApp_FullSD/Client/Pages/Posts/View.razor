@@ -1,0 +1,17 @@
+﻿@page "/posts/view/{id:int}"
+@inject HttpClient _client
+@inject NavigationManager _navManager
+
+<h3>View</h3>
+
+<FormComponent post="post" Disabled="true" />
+@code {
+	[Parameter] public int id { get; set; }
+	Post? post = new Post();
+	protected async override Task OnParametersSetAsync()
+	{
+		post = await
+		_client.GetFromJsonAsync<Post>($"{Endpoints.PostsEndpoint}/{id}");
+	}
+}
+

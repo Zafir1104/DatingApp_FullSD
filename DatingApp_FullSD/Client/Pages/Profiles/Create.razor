@@ -1,0 +1,63 @@
+﻿@page "/profiles/create/"
+@inject HttpClient _client
+@inject NavigationManager _navManager
+
+<h3 class="card-title">Create New Profiles</h3>
+<hr />
+<br />
+
+<EditForm Model="@profile" OnValidSubmit="CreateProfile">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+
+    <div class="form-group">
+        <label>UserName: </label>
+        <div>
+            <InputText @bind-Value="profile.UserName" class="form-control" />
+            <ValidationMessage For="@(() => profile.UserName)" />
+        </div>
+    </div>
+    <div class="form-group">
+        <label>Gender: </label>
+        <div>
+            <InputText @bind-Value="profile.Gender" class="form-control" />
+            <ValidationMessage For="@(() => profile.Gender)" />
+        </div>
+    </div>
+    <div class="form-group">
+        <label>Birthdate: </label>
+        <div>
+            <InputText @bind-Value="profile.Birthdate" class="form-control" />
+            <ValidationMessage For="@(() => profile.Birthdate)" />
+        </div>
+    </div>
+    <div class="form-group">
+        <label>Interest: </label>
+        <div>
+            <InputText @bind-Value="profile.Interest" class="form-control" />
+            <ValidationMessage For="@(() => profile.Interest)" />
+        </div>
+    </div>
+
+    <button type="submit" class="btn btn-success btn-block">
+        Create Profile
+    </button>
+</EditForm>
+
+@code {
+    private Profile profile = new Profile();
+    private IList<Profile>? Profiles;
+
+    protected async override Task OnInitializedAsync()
+    {
+        // Fetch the list of profiles from the server
+        Profiles = await _client.GetFromJsonAsync<List<Profile>>($"{Endpoints.ProfilesEndpoint}");
+    }
+
+    private async Task CreateProfile()
+    {
+        // Send the entire profile object to the server
+        await _client.PostAsJsonAsync(Endpoints.ProfilesEndpoint, profile);
+        _navManager.NavigateTo("/profiles/");
+    }
+}

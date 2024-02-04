@@ -1,0 +1,50 @@
+﻿<EditForm Model="@profile" OnValidSubmit="@OnValidSubmit">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+    <fieldset disabled ="@Disabled">
+        <div class="form-group">
+            <label>UserName: </label>
+            <div>
+                <InputText @bind-Value="profile.UserName" class="form-control" />
+                <ValidationMessage For="@(() => profile.UserName)" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label>Gender: </label>
+            <div>
+                <InputText @bind-Value="profile.Gender" class="form-control" />
+                <ValidationMessage For="@(() => profile.Gender)" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label>Birthdate: </label>
+            <div>
+                <InputText @bind-Value="profile.Birthdate" class="form-control" />
+                <ValidationMessage For="@(() => profile.Birthdate)" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label>Interest: </label>
+            <div>
+                <InputText @bind-Value="profile.Interest" class="form-control" />
+                <ValidationMessage For="@(() => profile.Interest)" />
+            </div>
+        </div>
+    </fieldset>
+
+    @if (!Disabled)
+    {
+        <button type="submit" class="btn btn-success btn-block">
+            @ButtonText
+        </button>
+    }
+    <BackToList Target="profiles" />
+</EditForm>
+
+@code {
+    [Parameter] public bool Disabled { get; set; } = false;
+    [Parameter] public Profile? profile { get; set; }
+    [Parameter] public string ButtonText { get; set; } = "Save";
+    [Parameter] public EventCallback OnValidSubmit { get; set; }
+
+}

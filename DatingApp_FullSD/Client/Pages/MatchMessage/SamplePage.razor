@@ -1,0 +1,10 @@
+﻿@page "/matchmessage/{userName}"
+
+<h3>You Have Successfully Matched with @UserName</h3>
+
+<h5>Would you like to start a Message Page</h5>
+<button class="btn btn-dark">Message!</button>
+
+@code {
+	[Parameter] public string UserName { get; set; }
+}

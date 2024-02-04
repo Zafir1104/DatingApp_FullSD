@@ -1,0 +1,80 @@
+﻿@page "/profiles/"
+@inject HttpClient _client
+@inject IJSRuntime js
+@attribute [Authorize]
+
+<h3 class="card-title">Profile Editor</h3>
+
+<a href="/profiles/create" class="btn btn-secondary">
+    <span class="oi oi-plus"></span>
+    Create New Profile
+</a>
+<br />
+<br />
+
+
+@if (Profiles == null)
+{
+    <div class="alert alert-info"> Loading Profiles...</div>
+}
+else
+{
+    <table class="table table-responsive">
+        <thead>
+            <tr>
+                <th>Profile Information</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var profile in Profiles)
+            {
+                <tr>
+                    <td>
+                        <p><strong>User Name:</strong> @profile.UserName</p>
+                        <p><strong>Gender:</strong> @profile.Gender</p>
+                        <p><strong>Birthdate:</strong> @profile.Birthdate</p>
+                        <p><strong>Interest:</strong> @profile.Interest</p>
+                    </td>
+                    <td>
+                        <div class="attribute-actions">
+                            <div>
+                                <a href="/profiles/view/@profile.Id" class="btn btn-primary">
+                                    <span class="oi oi-book"></span>
+                                </a>
+                                <a href="/profiles/edit/@profile.Id" class="btn btn-primary">
+                                    <span class="oi oi-pencil"></span>
+                                </a>
+                                <button class="btn btn-danger" @onclick="@(() => Delete("UserName", profile.Id, profile.UserName))">
+                                    <span class="oi oi-delete"></span>
+                                </button>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    private List<Profile>? Profiles;
+
+    protected async override Task OnInitializedAsync()
+    {
+        Profiles = await _client.GetFromJsonAsync<List<Profile>>($"{Endpoints.ProfilesEndpoint}");
+    }
+
+    async Task Delete(string attribute, int profileId, string attributeValue)
+    {
+        if (Profiles != null)
+        {
+            var confirm = await js.InvokeAsync<bool>("confirm", $"Do you want to delete {attribute} ({attributeValue})?");
+            if (confirm)
+            {
+                await _client.DeleteAsync($"{Endpoints.ProfilesEndpoint}/{profileId}");
+                await OnInitializedAsync();
+            }
+        }
+    }
+}

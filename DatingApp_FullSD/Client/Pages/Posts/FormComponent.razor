@@ -1,0 +1,40 @@
+﻿
+<EditForm Model="@post" OnValidSubmit="@OnValidSubmit">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+
+    <fieldset disabled="@Disabled">
+        <div class="form-group">
+            <label>PostText: </label>
+            <div>
+                <InputText @bind-Value="post.PostText" class="form-control" />
+                <ValidationMessage For="@(() => post.PostText)" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label>Post Picture: </label>
+            <div>
+                <InputText @bind-Value="post.PostPicture" class="form-control" placeholder="Only Enter Image URL . . ." />
+                <ValidationMessage For="@(() => post.PostPicture)" />
+            </div>
+        </div>
+    </fieldset>
+    
+
+    @if (!Disabled)
+    {
+        <button type="submit" class="btn btn-success btn-block">
+            @ButtonText
+        </button>
+    }
+
+    <BackToList Target="posts" />
+</EditForm>
+
+@code {
+    [Parameter] public bool Disabled { get; set; } = false;
+    [Parameter] public Post? post { get; set; }
+    [Parameter] public string ButtonText { get; set; } = "Save";
+    [Parameter] public EventCallback OnValidSubmit { get; set; }
+
+}

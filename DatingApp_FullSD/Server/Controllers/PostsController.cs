@@ -36,7 +36,7 @@ namespace DatingApp_FullSD.Server.Controllers
         // GET: api/Posts/5
         [HttpGet("{id}")]
 
-        public async Task<IActionResult> GetPosts(int id)
+        public async Task<IActionResult> GetPost(int id)
         {
             var post = await _unitOfWork.Posts.Get(q => q.Id == id);
 
@@ -51,7 +51,7 @@ namespace DatingApp_FullSD.Server.Controllers
         // PUT: api/Posts/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> Put(int id, Post post)
+        public async Task<IActionResult> PutPost(int id, Post post)
         {
             if (id != post.Id)
             {

@@ -78,7 +78,7 @@ namespace DatingApp_FullSD.Server.Controllers
 
         }
 
-        // POST: api/Matchs
+        // POST: api/Matches
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
         public async Task<ActionResult<Match>> PostMatch(Match match)

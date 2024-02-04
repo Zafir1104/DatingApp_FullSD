@@ -1,0 +1,70 @@
+﻿@page "/posts/create/"
+@inject HttpClient _client
+@inject NavigationManager _navManager
+
+<h3 class="card-title">Create New Post</h3>
+<hr />
+<br />
+
+<EditForm Model="@post" OnValidSubmit="CreatePost">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+
+    <div class="form-group">
+        <label>Post: </label>
+        <div>
+            <InputSelect @bind-Value="post.PostID" class="form-control">
+                <option value="">- - Select Post - - </option>
+                @if (Posts != null)
+                {
+                    foreach (var post in Posts)
+                    {
+                        <option value="@post.Id">@post.UserName</option>
+                    }
+                }
+
+            </InputSelect>
+            <ValidationMessage For="@(() => post.PostID)" />
+        </div>
+    </div>
+
+
+    <div class="form-group">
+        <label>PostText: </label>
+        <div>
+            <InputText @bind-Value="post.PostText" class="form-control" />
+            <ValidationMessage For="@(() => post.PostText)" />
+        </div>
+    </div>
+    <div class="form-group">
+        <label>Post Picture: </label>
+        <div>
+            <InputText @bind-Value="post.PostPicture" class="form-control" placeholder="Only Enter Image URL . . ." />
+            <ValidationMessage For="@(() => post.PostPicture)" />
+        </div>
+    </div>
+
+    <button type="submit" class="btn btn-success btn-block">
+        Create Post
+    </button>
+</EditForm>
+
+@code {
+    private Post post = new Post();
+    private IList<Post>? Posts;
+
+    protected async override Task OnInitializedAsync()
+    {
+        // Fetch the list of posts from the server
+        Posts = await _client.GetFromJsonAsync<List<Post>>($"{Endpoints.PostsEndpoint}");
+    }
+
+    private async Task CreatePost()
+    {
+        // Send the entire post object to the server
+        await _client.PostAsJsonAsync(Endpoints.PostsEndpoint, post);
+        _navManager.NavigateTo("/posts/");
+    }
+
+}
+
