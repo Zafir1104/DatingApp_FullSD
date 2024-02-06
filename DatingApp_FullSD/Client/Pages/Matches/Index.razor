@@ -3,6 +3,9 @@
 @inject HttpClient _client
 @inject IJSRuntime js
 @attribute [Authorize]
+@inject HttpInterceptorService _interceptor
+@implements IDisposable
+
 
 <h3 class="card-title">Start Matching!</h3>
 
@@ -51,7 +54,11 @@ else
 
     protected async override Task OnInitializedAsync()
     {
+        _interceptor.MonitorEvent();
         Profiles = await _client.GetFromJsonAsync<List<Profile>>($"{Endpoints.ProfilesEndpoint}");
     }
-
+    public void Dispose()
+    {
+        _interceptor.DisposeEvent();
+    }
 }

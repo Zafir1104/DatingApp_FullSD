@@ -1,6 +1,9 @@
 ﻿@page "/profiles/edit/{id:int}"
 @inject HttpClient _client
 @inject NavigationManager _navManager
+@inject HttpInterceptorService _interceptor
+@implements IDisposable
+
 
 <h3>Edit Profile</h3>
 <FormComponent ButtonText="Update" OnValidSubmit="EditProfile" profile="profile" />
@@ -11,6 +14,7 @@
 
 	protected async override Task OnParametersSetAsync()
 	{
+		_interceptor.MonitorEvent();
 		profile = await _client.GetFromJsonAsync<Profile>($"{Endpoints.ProfilesEndpoint}/{id}");
 
 	}
@@ -19,5 +23,9 @@
 	{
 		await _client.PutAsJsonAsync($"{Endpoints.ProfilesEndpoint}/{id}", profile);
 		_navManager.NavigateTo("/profiles/");
+	}
+	public void Dispose()
+	{
+		_interceptor.DisposeEvent();
 	}
 }

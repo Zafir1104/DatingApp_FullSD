@@ -1,6 +1,8 @@
 ﻿@page "/posts/create/"
 @inject HttpClient _client
 @inject NavigationManager _navManager
+@inject HttpInterceptorService _interceptor
+@implements IDisposable
 
 <h3 class="card-title">Create New Post</h3>
 <hr />
@@ -56,6 +58,7 @@
     protected async override Task OnInitializedAsync()
     {
         // Fetch the list of posts from the server
+        _interceptor.MonitorEvent();
         Posts = await _client.GetFromJsonAsync<List<Post>>($"{Endpoints.PostsEndpoint}");
     }
 
@@ -64,6 +67,11 @@
         // Send the entire post object to the server
         await _client.PostAsJsonAsync(Endpoints.PostsEndpoint, post);
         _navManager.NavigateTo("/posts/");
+    }
+
+    public void Dispose()
+    {
+        _interceptor.DisposeEvent();
     }
 
 }

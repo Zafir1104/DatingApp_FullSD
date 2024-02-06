@@ -1,6 +1,8 @@
 ﻿@page "/profiles/create/"
 @inject HttpClient _client
 @inject NavigationManager _navManager
+@inject HttpInterceptorService _interceptor
+@implements IDisposable
 
 <h3 class="card-title">Create New Profiles</h3>
 <hr />
@@ -50,6 +52,7 @@
 
     protected async override Task OnInitializedAsync()
     {
+        _interceptor.MonitorEvent();
         // Fetch the list of profiles from the server
         Profiles = await _client.GetFromJsonAsync<List<Profile>>($"{Endpoints.ProfilesEndpoint}");
     }
@@ -59,5 +62,9 @@
         // Send the entire profile object to the server
         await _client.PostAsJsonAsync(Endpoints.ProfilesEndpoint, profile);
         _navManager.NavigateTo("/profiles/");
+    }
+    public void Dispose()
+    {
+        _interceptor.DisposeEvent();
     }
 }

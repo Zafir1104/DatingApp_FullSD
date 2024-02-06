@@ -1,6 +1,8 @@
 ﻿@page "/posts/view/{id:int}"
 @inject HttpClient _client
 @inject NavigationManager _navManager
+@inject HttpInterceptorService _interceptor
+@implements IDisposable
 
 <h3>View</h3>
 
@@ -10,8 +12,14 @@
 	Post? post = new Post();
 	protected async override Task OnParametersSetAsync()
 	{
+
+		_interceptor.MonitorEvent();
 		post = await
 		_client.GetFromJsonAsync<Post>($"{Endpoints.PostsEndpoint}/{id}");
+	}
+	public void Dispose()
+	{
+		_interceptor.DisposeEvent();
 	}
 }
 

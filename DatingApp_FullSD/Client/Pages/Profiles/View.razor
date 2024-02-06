@@ -1,6 +1,8 @@
 ﻿@page "/profiles/view/{id:int}"
 @inject HttpClient _client
 @inject NavigationManager _navManager
+@inject HttpInterceptorService _interceptor
+@implements IDisposable
 
 <h3>View</h3>
 <FormComponent profile="profile" Disabled="true" />
@@ -10,7 +12,12 @@
 	Profile? profile = new Profile();
 	protected async override Task OnParametersSetAsync()
 	{
+		_interceptor.MonitorEvent();
 		profile = await
 		_client.GetFromJsonAsync<Profile>($"{Endpoints.ProfilesEndpoint}/{id}");
+	}
+	public void Dispose()
+	{
+		_interceptor.DisposeEvent();
 	}
 }
