@@ -12,25 +12,7 @@
     <DataAnnotationsValidator />
     <ValidationSummary />
 
-    <div class="form-group">
-        <label>Post: </label>
-        <div>
-            <InputSelect @bind-Value="post.PostID" class="form-control">
-                <option value="">- - Select Post - - </option>
-                @if (Posts != null)
-                {
-                    foreach (var post in Posts)
-                    {
-                        <option value="@post.Id">@post.UserName</option>
-                    }
-                }
-
-            </InputSelect>
-            <ValidationMessage For="@(() => post.PostID)" />
-        </div>
-    </div>
-
-
+    
     <div class="form-group">
         <label>PostText: </label>
         <div>
@@ -53,13 +35,13 @@
 
 @code {
     private Post post = new Post();
-    private IList<Post>? Posts;
+    private List<Profile>? Profiles;
 
     protected async override Task OnInitializedAsync()
     {
-        // Fetch the list of posts from the server
+        // Fetch the list of profiles from the server
         _interceptor.MonitorEvent();
-        Posts = await _client.GetFromJsonAsync<List<Post>>($"{Endpoints.PostsEndpoint}");
+        Profiles = await _client.GetFromJsonAsync<List<Profile>>($"{Endpoints.ProfilesEndpoint}");
     }
 
     private async Task CreatePost()
@@ -73,6 +55,4 @@
     {
         _interceptor.DisposeEvent();
     }
-
 }
-

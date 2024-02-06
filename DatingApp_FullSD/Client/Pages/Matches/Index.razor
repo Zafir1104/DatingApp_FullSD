@@ -1,15 +1,25 @@
-﻿
-@page "/matches/"
+﻿@page "/matches/"
 @inject HttpClient _client
 @inject IJSRuntime js
 @attribute [Authorize]
 @inject HttpInterceptorService _interceptor
 @implements IDisposable
 
-
 <h3 class="card-title">Start Matching!</h3>
 
-@if (Profiles == null)
+<div class="filter-section">
+    <label>Filter by Gender:</label>
+    <select @bind="selectedGender" @oninput="OnSelectedGenderChange">
+        <option value="">All</option>
+        <option value="Male">Male</option>
+        <option value="Female">Female</option>
+    </select>
+
+    <label>Search by Interest:</label>
+    <input type="text" @bind="interestSearch" @oninput="OnInterestSearchChange" />
+</div>
+
+@if (filteredProfiles == null)
 {
     <div class="alert alert-info"> Loading Matching Page...</div>
 }
@@ -23,7 +33,7 @@ else
             </tr>
         </thead>
         <tbody>
-            @foreach (var profile in Profiles)
+            @foreach (var profile in filteredProfiles)
             {
                 <tr>
                     <td>
@@ -50,15 +60,52 @@ else
 }
 
 @code {
-    private List<Profile>? Profiles;
+    private List<Profile>? filteredProfiles;
+    private string selectedGender = "";
+    private string interestSearch = "";
 
     protected async override Task OnInitializedAsync()
     {
         _interceptor.MonitorEvent();
-        Profiles = await _client.GetFromJsonAsync<List<Profile>>($"{Endpoints.ProfilesEndpoint}");
+        await LoadProfiles();
     }
+
+    private async Task LoadProfiles()
+    {
+        var allProfiles = await _client.GetFromJsonAsync<List<Profile>>($"{Endpoints.ProfilesEndpoint}");
+
+        ApplyFilter(allProfiles);
+    }
+
+    private void ApplyFilter(List<Profile> profiles)
+    {
+        filteredProfiles = profiles;
+
+        if (!string.IsNullOrEmpty(selectedGender))
+        {
+            filteredProfiles = filteredProfiles.Where(p => p.Gender == selectedGender).ToList();
+        }
+
+        if (!string.IsNullOrEmpty(interestSearch))
+        {
+            filteredProfiles = filteredProfiles.Where(p => p.Interest?.Contains(interestSearch, StringComparison.OrdinalIgnoreCase) == true).ToList();
+        }
+    }
+
     public void Dispose()
     {
         _interceptor.DisposeEvent();
+    }
+
+    private async Task OnSelectedGenderChange(ChangeEventArgs e)
+    {
+        selectedGender = e.Value.ToString();
+        await LoadProfiles();
+    }
+
+    private async Task OnInterestSearchChange(ChangeEventArgs e)
+    {
+        interestSearch = e.Value.ToString();
+        await LoadProfiles();
     }
 }
